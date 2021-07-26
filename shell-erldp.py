@@ -78,7 +78,9 @@ def erl_dist_recv(f):
   hdr = f.recv(4)
   if len(hdr) != 4: return
   (length,) = unpack('!I', hdr)
-  data = f.recv(length)
+  data = f.recv(1)
+  while len(data) != length:
+    data += f.recv(1)
   if len(data) != length: return
 
   # remove 0x70 from head of stream
